@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import string
 import random
+from typing import NoReturn
 
 
 class CryptoquoteAlreadyEncrypted(Exception):
@@ -31,7 +32,7 @@ class Cryptoquote:
         self.key = key
         self.crypto = ""
 
-    def encrypt(self):
+    def encrypt(self) -> NoReturn:
         if self.crypto:
             raise CryptoquoteAlreadyEncrypted
 
