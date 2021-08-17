@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 import string
 import random
 from typing import NoReturn
@@ -43,7 +42,7 @@ class Key:
             f"{self.key!r}, {self.mapping!r}"
         )
     
-    def set_key(self, value: str) -> str:
+    def set_key(self, value: str) -> NoReturn:
         """Set Key to a random value or a given value.
 
         Args:
@@ -61,9 +60,7 @@ class Key:
         
         if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
             raise ImproperKeyError
-        
-        self.key = value
-        return self.key
+
 
 
 
