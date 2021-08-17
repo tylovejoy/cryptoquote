@@ -32,8 +32,9 @@ class Cryptoquote:
         self.quote = quote
         self.key = key
         self.crypto = ""
+        self._encrypt()
 
-    def encrypt(self) -> NoReturn:
+    def _encrypt(self) -> NoReturn:
         if self.crypto:
             raise CryptoquoteAlreadyEncrypted
 
