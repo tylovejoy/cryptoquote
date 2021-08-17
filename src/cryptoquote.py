@@ -52,6 +52,8 @@ class Key:
         if not value:
             return random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
         
+        # New key length must equal 26 and must be unique non-repeating characters.
+        # Each character must be in the alphabet.
         if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
             raise errors.ImproperKeyError
         else:
