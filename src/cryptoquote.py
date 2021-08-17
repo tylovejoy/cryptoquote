@@ -54,7 +54,7 @@ class Key:
             ImproperKeyError: Key must be 26 unique letters of the uppercase alphabet.
 
         Returns:
-            str: Return the newly set key.
+            NoReturn
         """
         if value is None:
             self.key = random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
