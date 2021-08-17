@@ -4,10 +4,13 @@ import random
 from typing import NoReturn
 
 
-class CryptoquoteAlreadyEncrypted(Exception):
+class CryptoquoteAlreadyEncryptedError(Exception):
     """Exception for Cryptoquote that has already been encrypted."""
     pass
 
+class ImproperKeyError(Exception):
+    """Key must be 26 unique uppercase alphabetical letters."""
+    pass
 
 class Quote:
     def __init__(self, value) -> None:
@@ -28,18 +31,41 @@ class Quote:
 
 class Key:
     def __init__(self, value: str = None):
-        if self.value is None:
-            self.value = random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
-        self.mapping = dict(zip(string.ascii_uppercase, self.value))
+        self.set_key(value)
+        self.mapping = dict(zip(string.ascii_uppercase, self.key))
 
     def __str__(self) -> str:
-        return self.value
+        return self.key
 
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}("
-            f"{self.value!r}, {self.mapping!r}"
+            f"{self.key!r}, {self.mapping!r}"
         )
+    
+    def set_key(self, value: str) -> str:
+        """Set Key to a random value or a given value.
+
+        Args:
+            value (str): Value for the Key to be set to.
+
+        Raises:
+            ImproperKeyError: Key must be 26 unique letters of the uppercase alphabet.
+
+        Returns:
+            str: Return the newly set key.
+        """
+        if value is None:
+            self.key = random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
+            return self.key
+        
+        if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
+            raise ImproperKeyError
+        
+        self.key = value
+        return self.key
+
+
 
 class Cryptoquote:
     def __init__(self, quote: Quote, key: Key) -> None:
@@ -67,7 +93,7 @@ class Cryptoquote:
             NoReturn
         """
         if self.crypto:
-            raise CryptoquoteAlreadyEncrypted
+            raise CryptoquoteAlreadyEncryptedError
 
         for char in self.quote:
             if char not in string.ascii_uppercase:
