@@ -14,18 +14,18 @@ class ImproperKeyError(Exception):
 
 class Quote:
     def __init__(self, value) -> None:
-        self.value = value.upper()
+        self.quote = value.upper()
 
     def __str__(self) -> str:
-        return self.value
+        return self.quote
 
     def __iter__(self) -> iter:
-        return iter(self.value)
+        return iter(self.quote)
 
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}("
-            f"{self.value!r}"
+            f"{self.quote!r}"
         )
 
 
