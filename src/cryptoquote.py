@@ -48,7 +48,7 @@ class Key:
         Returns:
             str: Newly created key
         """
-        if value := value.upper() is None:
+        if not (value := value.upper()):
             return random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
         
         if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
