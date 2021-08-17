@@ -16,10 +16,7 @@ class Quote:
         return iter(self.quote)
 
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}("
-            f"{self.quote!r}"
-        )
+        return f"{self.__class__.__name__}({self.quote!r})"
 
 
 class Key:
@@ -31,11 +28,8 @@ class Key:
         return self.key
 
     def __repr__(self) -> str:
-        return (
-            f"{self.__class__.__name__}("
-            f"{self.key!r}, {self.mapping!r}"
-        )
-    
+        return f"{self.__class__.__name__}({self.key!r}, {self.mapping!r})"
+
     def _create_key(self, value: str) -> Optional[str]:
         """Set Key to a random value or a given value.
 
@@ -51,10 +45,12 @@ class Key:
         value = value.upper()
         if not value:
             return random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
-        
+
         # New key length must equal 26 and must be unique non-repeating characters.
         # Each character must be in the alphabet.
-        if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
+        if len(value) not in [26, len(set(value))] or not all(
+            l.isalpha() for l in value
+        ):
             raise errors.ImproperKeyError
         else:
             return value
@@ -66,13 +62,14 @@ class Key:
             ImproperKeyError: Must have a key to create a map
 
         Returns:
-            dict: Mapping dict with the standard alphabet as keys 
+            dict: Mapping dict with the standard alphabet as keys
             and the encrypted alphabet as values.
         """
         if self.key is None:
             raise errors.ImproperKeyError
 
         return dict(zip(string.ascii_uppercase, self.key))
+
 
 class Cryptoquote:
     def __init__(self, quote: Quote, key: Key) -> None:
@@ -87,7 +84,7 @@ class Cryptoquote:
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}("
-            f"{self.quote!r}, {self.key!r}, {self.crypto!r}"
+            f"{self.quote!r}, {self.key!r}, {self.crypto!r})"
         )
 
     def _encrypt(self) -> NoReturn:
