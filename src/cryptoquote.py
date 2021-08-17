@@ -1,16 +1,8 @@
-import string
 import random
+import string
 from typing import NoReturn, Optional
 
-
-class CryptoquoteAlreadyEncryptedError(Exception):
-    """Exception for Cryptoquote that has already been encrypted."""
-    pass
-
-
-class ImproperKeyError(Exception):
-    """Key must be 26 unique uppercase alphabetical letters."""
-    pass
+import errors
 
 
 class Quote:
@@ -60,20 +52,20 @@ class Key:
             return random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
         
         if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
-            raise ImproperKeyError
+            raise errors.ImproperKeyError
 
     def _create_mapping(self) -> dict:
         """Map the standard alphabet to the encrypted alphabet.
 
         Raises:
-            ImproperKeyError: Must have a key to create a map.
+            ImproperKeyError: Must have a key to create a map
 
         Returns:
             dict: Mapping dict with the standard alphabet as keys 
-                  and the encrypted alphabet as values.
+            and the encrypted alphabet as values.
         """
         if self.key is None:
-            raise ImproperKeyError
+            raise errors.ImproperKeyError
 
         return dict(zip(string.ascii_uppercase, self.key))
 
@@ -103,7 +95,7 @@ class Cryptoquote:
             NoReturn
         """
         if self.crypto:
-            raise CryptoquoteAlreadyEncryptedError
+            raise errors.CryptoquoteAlreadyEncryptedError
 
         for char in self.quote:
             if char not in string.ascii_uppercase:
