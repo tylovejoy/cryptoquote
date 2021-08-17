@@ -48,11 +48,13 @@ class Key:
         Returns:
             str: Newly created key
         """
-        if value is None:
+        if value := value.upper() is None:
             return random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
         
         if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
             raise errors.ImproperKeyError
+        else:
+            return value
 
     def _create_mapping(self) -> dict:
         """Map the standard alphabet to the encrypted alphabet.
