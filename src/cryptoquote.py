@@ -1,6 +1,6 @@
 import string
 import random
-from typing import NoReturn
+from typing import NoReturn, Optional
 
 
 class CryptoquoteAlreadyEncryptedError(Exception):
@@ -32,8 +32,8 @@ class Quote:
 
 class Key:
     def __init__(self, value: str = None):
-        self.set_key(value)
-        self.mapping = dict(zip(string.ascii_uppercase, self.key))
+        self.key = self._create_key(value)
+        self.mapping = self._create_mapping()
 
     def __str__(self) -> str:
         return self.key
@@ -44,7 +44,7 @@ class Key:
             f"{self.key!r}, {self.mapping!r}"
         )
     
-    def set_key(self, value: str) -> NoReturn:
+    def _create_key(self, value: str) -> Optional[str]:
         """Set Key to a random value or a given value.
 
         Args:
@@ -54,14 +54,28 @@ class Key:
             ImproperKeyError: Key must be 26 unique letters of the uppercase alphabet.
 
         Returns:
-            NoReturn
+            str: Newly created key
         """
         if value is None:
-            self.key = random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
+            return random.sample(string.ascii_uppercase, len(string.ascii_uppercase))
         
         if len(value) not in [26, len(set(value))] or not all(l.isalpha() for l in value):
             raise ImproperKeyError
 
+    def _create_mapping(self) -> dict:
+        """Map the standard alphabet to the encrypted alphabet.
+
+        Raises:
+            ImproperKeyError: Must have a key to create a map.
+
+        Returns:
+            dict: Mapping dict with the standard alphabet as keys 
+                  and the encrypted alphabet as values.
+        """
+        if self.key is None:
+            raise ImproperKeyError
+
+        return dict(zip(string.ascii_uppercase, self.key))
 
 class Cryptoquote:
     def __init__(self, quote: Quote, key: Key) -> None:
